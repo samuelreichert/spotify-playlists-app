@@ -4,6 +4,13 @@
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-  max-width: 900px;
+  max-width: 600px;
   min-height: 100vh;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
