@@ -11,4 +11,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  &.dark {
+    background-color: hsl(246 6% 9%);
+    color: hsl(0, 0%, 100%);
+  }
 }
