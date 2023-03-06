@@ -1,29 +1,13 @@
-.theme-toggle-button {
-  appearance: none;
-  background-color: transparent;
-  border: 1px solid hsla(0, 0%, 0%, 0.478);
-  border-radius: 10px;
-  border-width: 0.5px;
-  color: hsl(0, 0%, 11%);
-  cursor: pointer;
-  display: flex;
-  line-height: 1;
-  padding: 10px;
+@use '../styles/BaseContainer.scss';
 
-  &:hover,
-  &:active {
-    outline: 1px solid hsla(0, 0%, 0%, 0.478);
-  }
+.theme-toggle-button {
+  @extend %base-container;
+  appearance: none;
+  padding: 10px;
 }
 
 body.dark {
   .theme-toggle-button {
-    border: 1px solid hsla(0, 0%, 100%, 0.592);
-    color: hsl(0, 0%, 100%);
-
-    &:hover,
-    &:active {
-      outline-color: hsla(0, 0%, 100%, 0.446);
-    }
+    @extend %base-container-dark;
   }
 }

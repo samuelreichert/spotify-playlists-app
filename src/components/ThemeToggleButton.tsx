@@ -6,8 +6,8 @@ export const ThemeToggleButton = () => {
   const { theme, toggleTheme } = useTheme('light')
   return (
     <button className="theme-toggle-button" onClick={() => toggleTheme()}>
-      {theme === 'light' && <Sun size={12} />}
-      {theme === 'dark' && <Moon size={12} />}
+      {theme === 'light' && <Sun size={14} />}
+      {theme === 'dark' && <Moon size={14} />}
     </button>
   )
 }
