@@ -23,11 +23,10 @@ const useFetchAllPlaylists = () => {
       setPlaylists(newPlaylists)
     }
 
-    if (playlists.length === 0) {
+    if (accessToken && playlists.length === 0) {
       fetch()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playlists])
+  }, [accessToken, playlists])
 
   return playlists
 }

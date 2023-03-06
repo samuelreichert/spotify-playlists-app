@@ -23,11 +23,10 @@ const useFetchTracks = (playlistId: string) => {
       setTracks(newTracks)
     }
 
-    if (tracks.length === 0 || offset > 0) {
+    if (accessToken && (tracks.length === 0 || offset > 0)) {
       fetch()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tracks, offset])
+  }, [accessToken, offset, playlistId, tracks])
 
   return {
     tracks,

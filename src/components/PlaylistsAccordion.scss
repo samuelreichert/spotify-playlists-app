@@ -1,13 +1,14 @@
 @use '../styles/BaseContainer.scss';
 
-.theme-toggle-button {
+.playlists {
   @extend %base-container;
-  appearance: none;
-  padding: 10px;
+  flex-direction: column;
+  margin: 32px 0;
+  width: 100%;
 }
 
 body.dark {
-  .theme-toggle-button {
+  .playlists {
     @extend %base-container-dark;
   }
 }
