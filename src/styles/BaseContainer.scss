@@ -1,0 +1,23 @@
+%base-container {
+  background-color: transparent;
+  border: 1px solid hsla(0, 0%, 0%, 0.478);
+  border-radius: 10px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  line-height: 1;
+
+  &:hover,
+  &:active {
+    outline: 1px solid hsla(0, 0%, 0%, 0.478);
+  }
+}
+
+%base-container-dark {
+  border: 1px solid hsla(0, 0%, 100%, 0.592);
+
+  &:hover,
+  &:active {
+    outline-color: hsla(0, 0%, 100%, 0.446);
+  }
+}
