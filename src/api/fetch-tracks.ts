@@ -12,13 +12,16 @@ export const fetchTracks = async ({
   playlistId,
 }: FetchTracksParams): Promise<Track[]> => {
   const fields = 'items(track(name,artists(id,name)))'
+  const searchParams = new URLSearchParams(
+    `fields=${fields}&offset=${offset}&limit=20`
+  )
   const options = {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
   }
-  const url = `${process.env.REACT_APP_SPOTIFY_API_URL}/playlists/${playlistId}/tracks?fields=${fields}&offset=${offset}&limit=20`
+  const url = `${process.env.REACT_APP_SPOTIFY_API_URL}/playlists/${playlistId}/tracks?${searchParams}`
 
   const res = await fetch(url, options)
   const response = await res.json()
