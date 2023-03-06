@@ -3,6 +3,7 @@
 .theme-toggle-button {
   @extend %base-container;
   appearance: none;
+  cursor: pointer;
   padding: 10px;
 }
 
