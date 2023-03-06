@@ -51,7 +51,7 @@ export const Accordion: FC<AccordionProps> = ({
       </div>
 
       {isOpen && (
-        <div className="accordion-content">
+        <div className="accordion-content" data-testid="accordion-content">
           <p>
             Showing {allTracks.length} of {totalTracks} tracks
           </p>
