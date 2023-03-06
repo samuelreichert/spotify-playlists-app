@@ -1,0 +1,14 @@
+@use '../styles/BaseContainer.scss';
+
+.playlists {
+  @extend %base-container;
+  flex-direction: column;
+  margin: 32px 0;
+  width: 100%;
+}
+
+body.dark {
+  .playlists {
+    @extend %base-container-dark;
+  }
+}

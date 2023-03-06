@@ -1,5 +1,6 @@
 import React from 'react'
 import './App.scss'
+import { PlaylistAccordion } from './components/PlaylistsAccordion'
 import { ThemeToggleButton } from './components/ThemeToggleButton'
 
 function App() {
@@ -10,6 +11,8 @@ function App() {
 
         <ThemeToggleButton />
       </div>
+
+      <PlaylistAccordion />
     </div>
   )
 }
