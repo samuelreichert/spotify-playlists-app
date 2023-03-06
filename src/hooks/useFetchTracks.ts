@@ -3,15 +3,25 @@ import { fetchTracks } from '../api/fetch-tracks'
 import { Track } from '../types'
 import useFetchAccessToken from './useFetchAccessToken'
 
-const useFetchTracks = (playlistId: string) => {
+const useFetchTracks = () => {
+  const [playlistId, setPlaylistId] = useState('')
   const [tracks, setTracks] = useState<Track[]>([])
   const [offset, setOffset] = useState(0)
   const accessToken = useFetchAccessToken()
 
-  type FetchMoreTracksParams = { length: number }
+  type FetchMoreTracksParams = {
+    length: number
+    playlistId: string
+  }
 
-  const fetchMoreTracks = ({ length }: FetchMoreTracksParams) =>
+  const fetchTracksFromPlaylist = ({
+    length = 0,
+    playlistId,
+  }: FetchMoreTracksParams) => {
+    console.log(length, playlistId)
     setOffset(length)
+    setPlaylistId(playlistId)
+  }
 
   useEffect(() => {
     const fetch = async () => {
@@ -23,14 +33,15 @@ const useFetchTracks = (playlistId: string) => {
       setTracks(newTracks)
     }
 
-    if (accessToken && (tracks.length === 0 || offset > 0)) {
+    if (accessToken && playlistId) {
+      console.log('here')
       fetch()
     }
-  }, [accessToken, offset, playlistId, tracks])
+  }, [accessToken, offset, playlistId])
 
   return {
     tracks,
-    fetchMoreTracks,
+    fetchTracksFromPlaylist,
   }
 }
 
