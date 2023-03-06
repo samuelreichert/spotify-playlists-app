@@ -13,11 +13,10 @@ const useFetchArtist = (artistId: string) => {
       setArtist(result)
     }
 
-    if (!artist) {
+    if (accessToken && !artist) {
       fetch()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [artist])
+  }, [accessToken, artist, artistId])
 
   return artist
 }
