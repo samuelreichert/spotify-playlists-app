@@ -1,5 +1,6 @@
-import { FC, useEffect, useState } from 'react'
+import { FC, useEffect } from 'react'
 import { TrackDetails } from './TrackDetails'
+import useLocalStorage from '../hooks/useLocalStorage'
 import useFetchTracks from '../hooks/useFetchTracks'
 import { Track } from '../types'
 import './TracksList.scss'
@@ -15,9 +16,8 @@ export const TracksList: FC<TracksListProps> = ({
   playlistId,
   totalTracks,
 }) => {
-  const [allTracks, setTracks] = useState<Track[] | []>([])
+  const [allTracks, setTracks] = useLocalStorage(`tracks-${playlistId}`, [])
   const { fetchTracksFromPlaylist, tracks } = useFetchTracks()
-  console.log(tracks)
 
   useEffect(() => {
     if (isOpen && allTracks.length === 0) {
@@ -40,7 +40,7 @@ export const TracksList: FC<TracksListProps> = ({
       </p>
       {isOpen && allTracks.length === 0 && <p>Loading...</p>}
       <div className="tracks-list">
-        {allTracks.map((track, i) => {
+        {allTracks.map((track: Track, i: number) => {
           return <TrackDetails track={track} key={i} />
         })}
         {allTracks.length < totalTracks && (
