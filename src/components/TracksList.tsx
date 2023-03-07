@@ -38,25 +38,33 @@ export const TracksList: FC<TracksListProps> = ({
       <p>
         Showing {allTracks.length} of {totalTracks} tracks
       </p>
-      {isOpen && allTracks.length === 0 && <p>Loading...</p>}
-      <div className="tracks-list">
-        {allTracks.map((track: Track, i: number) => {
-          return <TrackDetails track={track} key={i} />
-        })}
-        {allTracks.length < totalTracks && (
-          <span
-            className="show-more"
-            onClick={() =>
-              fetchTracksFromPlaylist({ length: allTracks.length, playlistId })
-            }
-          >
-            Show more...
-          </span>
-        )}
-        <p className="tracks-total">
-          Showing {allTracks.length} of {totalTracks} tracks
-        </p>
-      </div>
+
+      {isOpen && allTracks.length === 0 ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="tracks-list">
+          {allTracks.map((track: Track, i: number) => {
+            return <TrackDetails track={track} key={i} />
+          })}
+          {allTracks.length < totalTracks && (
+            <span
+              className="show-more"
+              onClick={() =>
+                fetchTracksFromPlaylist({
+                  length: allTracks.length,
+                  playlistId,
+                })
+              }
+            >
+              Show more...
+            </span>
+          )}
+        </div>
+      )}
+
+      <p className="tracks-total">
+        Showing {allTracks.length} of {totalTracks} tracks
+      </p>
     </>
   )
 }
