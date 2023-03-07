@@ -1,5 +1,6 @@
 import { FC, useState } from 'react'
 import { ChevronDown, ChevronUp } from './Icons'
+import { TracksList } from './TracksList'
 import './Accordion.scss'
 
 type AccordionProps = {
@@ -16,17 +17,6 @@ export const Accordion: FC<AccordionProps> = ({
   totalTracks,
 }) => {
   const [isOpen, setOpen] = useState(false)
-  const [allTracks, setTracks] = useState([])
-
-  const fetchTracks = () => {
-    if (!isOpen && allTracks.length === 0) {
-      // fetchTracks
-      // fetch tracks with id
-      console.log(playlistId)
-    }
-
-    toggleAccordion()
-  }
 
   const toggleAccordion = () => {
     if (isOpen) {
@@ -37,8 +27,8 @@ export const Accordion: FC<AccordionProps> = ({
   }
 
   return (
-    <div className="accordion" onClick={fetchTracks}>
-      <div className="accordion-summary">
+    <div className="accordion">
+      <div className="accordion-summary" onClick={toggleAccordion}>
         <div className="accordion-summary-content">
           <div className="accordion-image">
             <img src={image} alt={title} />
@@ -52,9 +42,11 @@ export const Accordion: FC<AccordionProps> = ({
 
       {isOpen && (
         <div className="accordion-content" data-testid="accordion-content">
-          <p>
-            Showing {allTracks.length} of {totalTracks} tracks
-          </p>
+          <TracksList
+            isOpen={isOpen}
+            playlistId={playlistId}
+            totalTracks={totalTracks}
+          />
         </div>
       )}
     </div>

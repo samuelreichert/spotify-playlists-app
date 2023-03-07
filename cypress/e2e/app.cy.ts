@@ -1,9 +1,6 @@
 describe('Home page', () => {
-  before(() => {
-    cy.clearLocalStorage()
-  })
-
   beforeEach(() => {
+    cy.clearLocalStorage()
     cy.visit('http://localhost:3000/')
   })
 
@@ -25,5 +22,29 @@ describe('Home page', () => {
     cy.get('.accordion-content').should('not.exist')
     cy.get('.accordion').first().click()
     cy.get('.accordion-content').should('be.visible')
+  })
+
+  it('should be able to see tracks', () => {
+    cy.get('.accordion-summary').first().click()
+    cy.get('.tracks-list').should('be.visible')
+    cy.get('.track').should('have.length', 20)
+  })
+
+  it('should be able to show artist details', () => {
+    cy.get('.accordion-summary').first().click()
+    cy.get('.artist').should('not.exist')
+    cy.get('.track-artist').first().click()
+    cy.get('.artist').should('be.visible')
+    cy.get('.artist-name').should('be.visible')
+  })
+
+  it('should be able to close artist details', () => {
+    cy.get('.accordion-summary').first().click()
+    cy.get('.artist').should('not.exist')
+    cy.get('.track-artist').first().click()
+    cy.get('.artist').should('be.visible')
+    cy.get('.artist-name').should('be.visible')
+    cy.get('.close').first().click()
+    cy.get('.artist').should('not.exist')
   })
 })
