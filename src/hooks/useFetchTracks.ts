@@ -18,7 +18,6 @@ const useFetchTracks = () => {
     length = 0,
     playlistId,
   }: FetchMoreTracksParams) => {
-    console.log(length, playlistId)
     setOffset(length)
     setPlaylistId(playlistId)
   }
@@ -34,7 +33,6 @@ const useFetchTracks = () => {
     }
 
     if (accessToken && playlistId) {
-      console.log('here')
       fetch()
     }
   }, [accessToken, offset, playlistId])
