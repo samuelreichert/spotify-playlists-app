@@ -6,6 +6,8 @@
 - Make sure you have [Yarn](https://yarnpkg.com/getting-started/install) intalled.
 - Then run:
   `yarn install`
+- Copy the content of `.env.example` and paste on a new file named `.env`
+- Add the Spotify Token to `REACT_APP_AUTHENTICATION_HEADER` inside `.env` file
 
 ## Available Scripts
 
