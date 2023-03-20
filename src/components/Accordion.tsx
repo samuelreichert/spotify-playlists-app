@@ -19,11 +19,7 @@ export const Accordion: FC<AccordionProps> = ({
   const [isOpen, setOpen] = useState(false)
 
   const toggleAccordion = () => {
-    if (isOpen) {
-      setOpen(false)
-    } else {
-      setOpen(true)
-    }
+    setOpen(prevState => !prevState)
   }
 
   return (

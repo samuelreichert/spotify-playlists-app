@@ -19,10 +19,10 @@ export const Artist: FC<ArtistProps> = ({ id, setIsOpen }) => {
         className="artist-image"
         src={artist?.images?.[0].url || ''}
         width={60}
-        alt={artist?.name}
+        alt={artist.name}
       />
-      <p className="artist-name">{artist?.name}</p>
-      <p className="artist-details">{`${artist?.followers?.total} followers`}</p>
+      <p className="artist-name">{artist.name}</p>
+      <p className="artist-details">{`${artist.followers.total} followers`}</p>
       <p className="artist-details">{`${artist?.popularity}% popular`}</p>
       <p className="artist-details">Genres: {artist?.genres?.join(', ')}</p>
     </div>
