@@ -1,3 +1,5 @@
+@use 'styles/BaseContainer.scss';
+
 .container {
   display: flex;
   flex-direction: column;
@@ -14,4 +16,38 @@
   display: flex;
   justify-content: space-between;
   width: 100%;
+  view-transition-name: header;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  view-transition-name: main-content;
+}
+
+.login-button,
+.logout {
+  @extend %base-container;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+}
+
+body.dark {
+  .login-button,
+  .logout {
+    @extend %base-container-dark;
+  }
+}
+
+.playlists-wrapper {
+  width: 100%;
+  view-transition-name: main-content;
 }

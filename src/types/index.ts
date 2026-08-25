@@ -8,7 +8,10 @@ export type Playlist = {
   id: string
   images: Image[]
   name: string
-  tracks: {
+  owner: {
+    id: string
+  }
+  items: {
     total: number
   }
 }
@@ -18,10 +21,6 @@ export type Artist = {
   name: string
   genres?: string[]
   images?: Image[]
-  popularity?: number
-  followers: {
-    total: number
-  }
 }
 
 export type Track = {

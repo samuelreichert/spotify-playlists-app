@@ -1,45 +1,39 @@
-import { useEffect, useState } from 'react'
-import { fetchTracks } from '../api/fetch-tracks'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { fetchTracks, PAGE_SIZE } from '../api/fetch-tracks'
 import { Track } from '../types'
-import useFetchAccessToken from './useFetchAccessToken'
+import { useAuth } from '../contexts/AuthContext'
 
-const useFetchTracks = () => {
-  const [playlistId, setPlaylistId] = useState('')
-  const [tracks, setTracks] = useState<Track[]>([])
-  const [offset, setOffset] = useState(0)
-  const accessToken = useFetchAccessToken()
+const useFetchTracks = (playlistId: string, enabled: boolean) => {
+  const { accessToken } = useAuth()
 
-  type FetchMoreTracksParams = {
-    length: number
-    playlistId: string
-  }
-
-  const fetchTracksFromPlaylist = ({
-    length = 0,
-    playlistId,
-  }: FetchMoreTracksParams) => {
-    setOffset(length)
-    setPlaylistId(playlistId)
-  }
-
-  useEffect(() => {
-    const fetch = async () => {
-      const newTracks = await fetchTracks({
-        accessToken,
+  const query = useInfiniteQuery({
+    queryKey: ['tracks', playlistId],
+    queryFn: ({ pageParam }) =>
+      fetchTracks({
+        accessToken: accessToken!,
         playlistId,
-        offset,
-      })
-      setTracks(newTracks)
-    }
+        offset: pageParam,
+      }),
+    initialPageParam: 0,
+    getNextPageParam: last =>
+      last.next ? last.offset + PAGE_SIZE : undefined,
+    enabled: !!accessToken && !!playlistId && enabled,
+    staleTime: 5 * 60 * 1000,
+  })
 
-    if (accessToken && playlistId) {
-      fetch()
-    }
-  }, [accessToken, offset, playlistId])
+  const tracks: Track[] =
+    query.data?.pages.flatMap(p =>
+      p.items.flatMap(i => i.item?.type === 'track' && i.item.artists?.length ? [i.item] : [])
+    ) ?? []
 
   return {
     tracks,
-    fetchTracksFromPlaylist,
+    fetchNextPage: query.fetchNextPage,
+    hasNextPage: query.hasNextPage,
+    isFetchingNextPage: query.isFetchingNextPage,
+    isPending: query.isPending,
+    isError: query.isError,
+    error: query.error,
   }
 }
 

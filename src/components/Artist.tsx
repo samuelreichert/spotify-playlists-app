@@ -8,23 +8,29 @@ type ArtistProps = {
 }
 
 export const Artist: FC<ArtistProps> = ({ id, setIsOpen }) => {
-  const artist = useFetchArtist(id)
+  const { data: artist, isPending, isError } = useFetchArtist(id)
 
   return (
     <div className="artist">
       <span className="close" onClick={() => setIsOpen(false)}>
         ×
       </span>
-      <img
-        className="artist-image"
-        src={artist?.images?.[0].url || ''}
-        width={60}
-        alt={artist.name}
-      />
-      <p className="artist-name">{artist.name}</p>
-      <p className="artist-details">{`${artist.followers.total} followers`}</p>
-      <p className="artist-details">{`${artist?.popularity}% popular`}</p>
-      <p className="artist-details">Genres: {artist?.genres?.join(', ')}</p>
+      {isPending && <p>Loading…</p>}
+      {isError && <p>Failed to load artist.</p>}
+      {artist && (
+        <>
+          <img
+            className="artist-image"
+            src={artist.images?.[0]?.url || ''}
+            width={60}
+            alt={artist.name}
+          />
+          <p className="artist-name">{artist.name}</p>
+          {artist.genres?.length ? (
+            <p className="artist-details">Genres: {artist.genres.join(', ')}</p>
+          ) : null}
+        </>
+      )}
     </div>
   )
 }

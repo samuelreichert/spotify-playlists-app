@@ -1,6 +1,7 @@
-import React from 'react'
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
+import { describe, expect, it } from 'vitest'
 import { Accordion } from './Accordion'
+import { renderWithProviders } from '../test/render'
 
 describe('Accordion', () => {
   const props = {
@@ -11,18 +12,18 @@ describe('Accordion', () => {
   }
 
   it('renders Accordion', () => {
-    render(<Accordion {...props} />)
+    renderWithProviders(<Accordion {...props} />)
     expect(screen.getByText('The ABC')).toBeInTheDocument()
   })
 
   it('shows details of the item', () => {
-    render(<Accordion {...props} />)
+    renderWithProviders(<Accordion {...props} />)
     expect(screen.getByAltText('The ABC')).toBeInTheDocument()
     expect(screen.getByText('10 tracks')).toBeInTheDocument()
   })
 
   it('can expand the accordion', () => {
-    render(<Accordion {...props} />)
+    renderWithProviders(<Accordion {...props} />)
     expect(screen.queryByTestId('accordion-content')).not.toBeInTheDocument()
     const accordion = screen.getByText('The ABC')
     fireEvent.click(accordion)

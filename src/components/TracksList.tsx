@@ -1,8 +1,6 @@
-import { FC, useEffect } from 'react'
+import { FC } from 'react'
 import { TrackDetails } from './TrackDetails'
-import useLocalStorage from '../hooks/useLocalStorage'
 import useFetchTracks from '../hooks/useFetchTracks'
-import { Track } from '../types'
 import './TracksList.scss'
 
 type TracksListProps = {
@@ -16,55 +14,58 @@ export const TracksList: FC<TracksListProps> = ({
   playlistId,
   totalTracks,
 }) => {
-  const [allTracks, setTracks] = useLocalStorage(`tracks-${playlistId}`, [])
-  const { fetchTracksFromPlaylist, tracks } = useFetchTracks()
+  const {
+    tracks,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isPending,
+    isError,
+    error,
+  } = useFetchTracks(playlistId, isOpen)
 
-  useEffect(() => {
-    if (isOpen && allTracks.length === 0) {
-      fetchTracksFromPlaylist({ length: allTracks.length, playlistId })
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allTracks.length, isOpen])
+  if (isPending) return <p>Loading...</p>
 
-  useEffect(() => {
-    if (tracks.length > 0) {
-      setTracks([...allTracks, ...tracks])
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tracks])
+  if (isError) {
+    const status = (error as (Error & { status?: number }) | null)?.status
+    const msg =
+      status === 403
+        ? 'Access denied (403). In Spotify Developer Dashboard, ensure your account is added under User Management.'
+        : 'Failed to load tracks. Try closing and reopening the playlist.'
+    return <p className="tracks-error">{msg}</p>
+  }
+
+  const knownTotal = totalTracks > 0 ? totalTracks : tracks.length
 
   return (
     <>
-      <p>
-        Showing {allTracks.length} of {totalTracks} tracks
-      </p>
-
-      {isOpen && allTracks.length === 0 ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="tracks-list">
-          {allTracks.map((track: Track, i: number) => {
-            return <TrackDetails track={track} key={i} />
-          })}
-          {allTracks.length < totalTracks && (
-            <span
-              className="show-more"
-              onClick={() =>
-                fetchTracksFromPlaylist({
-                  length: allTracks.length,
-                  playlistId,
-                })
-              }
-            >
-              Show more...
-            </span>
-          )}
-        </div>
+      {knownTotal > 0 && (
+        <p>
+          Showing {tracks.length} of {knownTotal} tracks
+        </p>
       )}
 
-      <p className="tracks-total">
-        Showing {allTracks.length} of {totalTracks} tracks
-      </p>
+      <div className="tracks-list">
+        {tracks.map((track, i) => (
+          <TrackDetails track={track} key={i} />
+        ))}
+        {hasNextPage && (
+          <span
+            className="show-more"
+            onClick={() => {
+              if (!isFetchingNextPage) fetchNextPage()
+            }}
+          >
+            {isFetchingNextPage ? 'Loading…' : 'Show more...'}
+          </span>
+        )}
+      </div>
+
+      {knownTotal > 0 && tracks.length > 0 && (
+        <p className="tracks-total">
+          Showing {tracks.length} of {knownTotal} tracks
+        </p>
+      )}
     </>
   )
 }

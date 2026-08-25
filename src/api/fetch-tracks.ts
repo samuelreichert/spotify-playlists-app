@@ -6,26 +6,37 @@ type FetchTracksParams = {
   playlistId: string
 }
 
+export type TracksPage = {
+  items: { item: (Track & { type: string }) | null }[]
+  next: string | null
+  offset: number
+  total: number
+  limit: number
+}
+
+export const PAGE_SIZE = 20
+
 export const fetchTracks = async ({
   accessToken,
   offset = 0,
   playlistId,
-}: FetchTracksParams): Promise<Track[]> => {
-  const fields = 'items(track(name,artists(id,name)))'
-  const searchParams = new URLSearchParams(
-    `fields=${fields}&offset=${offset}&limit=20`
-  )
-  const options = {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+}: FetchTracksParams): Promise<TracksPage> => {
+  const fields = 'items(item(name,artists(id,name),type)),next,offset,total,limit'
+  const params = new URLSearchParams({
+    fields,
+    offset: String(offset),
+    limit: String(PAGE_SIZE),
+  })
+  const url = `${import.meta.env.VITE_SPOTIFY_API_URL}/playlists/${playlistId}/items?${params}`
+
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  })
+  if (!res.ok) {
+    const body = await res.text().catch(() => '')
+    const err = new Error(`Failed to fetch tracks: ${res.status}${body ? ` — ${body}` : ''}`) as Error & { status: number }
+    err.status = res.status
+    throw err
   }
-  const url = `${process.env.REACT_APP_SPOTIFY_API_URL}/playlists/${playlistId}/tracks?${searchParams}`
-
-  const res = await fetch(url, options)
-  const response = await res.json()
-  const tracks = response.items.map((item: { track: Track }) => item.track)
-
-  return tracks
+  return res.json()
 }
