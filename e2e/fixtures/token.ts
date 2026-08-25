@@ -1,0 +1,7 @@
+export const tokenFixture = {
+  access_token: 'mock-access-token',
+  token_type: 'Bearer',
+  expires_in: 3600,
+  refresh_token: 'mock-refresh-token',
+  scope: '',
+}

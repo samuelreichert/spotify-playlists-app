@@ -9,17 +9,12 @@ export const fetchArtist = async ({
   accessToken,
   artistId,
 }: FetchArtistParams): Promise<Artist> => {
-  const options = {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
+  const url = `${import.meta.env.VITE_SPOTIFY_API_URL}/artists/${artistId}`
+  const res = await fetch(url, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  })
+  if (!res.ok) {
+    throw new Error(`Failed to fetch artist ${artistId}: ${res.status}`)
   }
-  const url = `${process.env.REACT_APP_SPOTIFY_API_URL}/artists/${artistId}`
-
-  const res = await fetch(url, options)
-  const response = await res.json()
-  const artist = response
-
-  return artist
+  return res.json()
 }
